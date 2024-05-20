@@ -4,15 +4,14 @@ menu= """ Digite uma opção:
 1-Depositar
 2-Sacar  
 3-Extrato
-4-Transferência 
-5-Sair
+4-Sair 
 ===> """
 saldo=0
 limite=500
 extrato=" "
 numero_saques=0
-numero_trans=0
-LIMITE_TRANS=3
+#numero_trans=0
+#LIMITE_TRANS=3
 LIMITE_SAQUE= 4
 while True:
  
@@ -68,36 +67,8 @@ while True:
      print(" Saldo:R$%d"%(saldo))
      # ----OPÇÃO 4     
  elif opcao==4:
-  print("Digite 0 caso queira cancelar essa operção")
-     if saldo<10:
-         print("Você não possui saldo suficiente!")
-     else:    
-      valorT=float(input("Digite o valor que deseja transferir: "))
-      excedeu_trans = numero_trans>=LIMITE_TRANS
-      excedeu_saldo=saldo<valorT
-      print("Transferência:")
-      if excedeu_trans:
-         print("Você execedeu o numero de transferências!")
-      elif valorT<10 and valorT>0:
-         print("❌❌❌ A transferência minima é de R$10,00")    
+    break    
       
-      elif excedeu_saldo:
-         print("você não possui saldo para esta operação!")    
-      elif valorT<0:
-         print("O valor digitado é inválido!")  
-       elif valorS==0:
-          print("Operação cancelada com sucesso")  
-      else:
-         numero_trans+=1  
-         saldo-=valorT 
-         extrato += " Transferência:R$%d\n"%(valorT)
-         print("Transferência realizada com sucesso!")
-         print("Operaçao Realizada: Transferência\nValor:%d" %(valorT))    
-# --------OPÇÃO 5
-          
- elif opcao==5:
-        print("Obrigado por utilizar o nosso serviço, Até Logo😉")
-        break
   # ---- FIM
- else:
-  print("Operação inválida, por favor selecione a operação desejada") 
+else:
+     print("Operação inválida, por favor selecione a operação desejada") 
