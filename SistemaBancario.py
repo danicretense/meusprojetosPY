@@ -17,7 +17,7 @@ LIMITE_SAQUE= 4
 while True:
  
  opcao = int(input(menu))
-   
+   # ----OPÇÃO 1
  if opcao==1:
       print("Deposito :")
       print("Digite 0 caso queira cancelar a operação")
@@ -35,7 +35,7 @@ while True:
       else:      
        print("O valor digitado é invalido!\nO valor minimo de deposito é R$5.00")
 
-      
+     # -----OPÇÃO 2 
  elif opcao==2:
       print("Saque:") 
       print("Digite 0 caso queira cancelar a operação") 
@@ -61,12 +61,14 @@ while True:
           print("Operação cancelada com sucesso")   
       else:      
           print("O valor informado é invalido!") 
+       # ----OPÇÃO 3
  elif opcao==3:
      print(" Extrato:")  
      print("Não foram realizadas movimentações."if not extrato else extrato)
      print(" Saldo:R$%d"%(saldo))
-          
+     # ----OPÇÃO 4     
  elif opcao==4:
+  print("Digite 0 caso queira cancelar essa operção")
      if saldo<10:
          print("Você não possui saldo suficiente!")
      else:    
@@ -83,16 +85,19 @@ while True:
          print("você não possui saldo para esta operação!")    
       elif valorT<0:
          print("O valor digitado é inválido!")  
+       elif valorS==0:
+          print("Operação cancelada com sucesso")  
       else:
          numero_trans+=1  
          saldo-=valorT 
          extrato += " Transferência:R$%d\n"%(valorT)
          print("Transferência realizada com sucesso!")
          print("Operaçao Realizada: Transferência\nValor:%d" %(valorT))    
-
+# --------OPÇÃO 5
           
  elif opcao==5:
         print("Obrigado por utilizar o nosso serviço, Até Logo😉")
         break
+  # ---- FIM
  else:
   print("Operação inválida, por favor selecione a operação desejada") 
