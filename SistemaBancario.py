@@ -1,5 +1,5 @@
 #  Nova função adicionada:
-# Agora o usuario irá poder realizar transferências apartir de R$10,00         
+# Agora o usuario irá poder realizar até 3 transferências de  qualquer valor      
 menu= """ Digite uma opção:
 1-Depositar
 2-Sacar  
@@ -26,7 +26,7 @@ while True:
           print("Deposito realizado com sucesso!")
           saldo+=valorD
           extrato += "Depósito:R$%d\n"%(valorD)
-          print("Operaçao Realizada: Deposito\nValor:%d"%(valorD))
+          print("Operaçao Realizada: Deposito\nValor:R$%d"%(valorD))
       elif valorD==0:
           print("Operação cancelada com sucesso!")
           continue
@@ -56,7 +56,7 @@ while True:
           extrato += " Saque:R$%d\n"%(valorS)
           numero_saques+=1  
           print("Saque realizado com sucesso!")
-          print("Operaçao Realizada: Saque\nValor:%d" %(valorS))
+          print("Operaçao Realizada: Saque\nValor:R$%d" %(valorS))
       elif valorS==0:
           print("Operação cancelada com sucesso") 
           continue  
@@ -90,7 +90,7 @@ while True:
           saldo-=valort
           numero_trans+=1
           print("Transferência realizada com sucesso!")
-          print("Operaçao Realizada: Transferência\nValor:%d" %(valort))           
+          print("Operaçao Realizada: Transferência\nValor:R$%d" %(valort))           
           extrato += " Transferência:R$%d\n"%(valort)
  elif opcao==5:
     break
