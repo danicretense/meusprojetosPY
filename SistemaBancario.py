@@ -4,14 +4,15 @@ menu= """ Digite uma opção:
 1-Depositar
 2-Sacar  
 3-Extrato
-4-Sair 
+4-Transferência
+5-Sair 
 ===> """
 saldo=0
 limite=500
 extrato=" "
 numero_saques=0
-#numero_trans=0
-#LIMITE_TRANS=3
+numero_trans=0
+LIMITE_TRANS=3
 LIMITE_SAQUE= 4
 while True:
  
@@ -57,7 +58,8 @@ while True:
           print("Saque realizado com sucesso!")
           print("Operaçao Realizada: Saque\nValor:%d" %(valorS))
       elif valorS==0:
-          print("Operação cancelada com sucesso")   
+          print("Operação cancelada com sucesso") 
+          continue  
       else:      
           print("O valor informado é invalido!") 
        # ----OPÇÃO 3
@@ -67,8 +69,32 @@ while True:
      print(" Saldo:R$%d"%(saldo))
      # ----OPÇÃO 4     
  elif opcao==4:
-    break    
-      
-  # ---- FIM
-else:
-     print("Operação inválida, por favor selecione a operação desejada") 
+     print("Transferência:") 
+     excedeu_Limitet=numero_trans>=LIMITE_TRANS
+     if saldo<=0:
+      print("você não tem saldo suficiente") 
+     else:
+      print("Digite 0 caso queira cancelar a operação")
+      valort=float(input("Qual valor deseja transferir?"))
+      execedeu_saldot=valort>saldo
+      if excedeu_Limitet:
+          print("Você execedeu o limite de transferências")
+      elif execedeu_saldot:
+          print("Você não possui saldo para esta operação")
+      elif valort<0:
+          print("O valor digitado é invalido")
+      elif valort==0:
+          print("Operação cancelada com sucesso")  
+          continue  
+      else:
+          saldo-=valort
+          numero_trans+=1
+          print("Transferência realizada com sucesso!")
+          print("Operaçao Realizada: Transferência\nValor:%d" %(valort))           
+          extrato += " Transferência:R$%d\n"%(valort)
+ elif opcao==5:
+    break
+ 
+ # ---- FIM
+ else:
+  print("Operação inválida, por favor selecione a operação desejada") 
