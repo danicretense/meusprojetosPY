@@ -93,7 +93,9 @@ while True:
           print("Operaçao Realizada: Transferência\nValor:R$%d" %(valort))           
           extrato += " Transferência:R$%d\n"%(valort)
  elif opcao==5:
+    print("Obrigado por usar nosso serviço")
     break
+    
  
  # ---- FIM
  else:
