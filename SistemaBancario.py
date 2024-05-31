@@ -31,7 +31,8 @@ while True:
           print("Operação cancelada com sucesso!")
           continue
           
-                
+          
+           
       else:      
        print("O valor digitado é invalido!\nO valor minimo de deposito é R$5.00")
 
@@ -99,4 +100,4 @@ while True:
  
  # ---- FIM
  else:
-  print("Operação inválida, por favor selecione a operação desejada") 
+     print("Opção invalida!")
