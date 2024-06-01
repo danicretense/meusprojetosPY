@@ -5,16 +5,22 @@ def menu():
     2-Sacar  
     3-Extrato
     4-Transferência
-    5-Sair 
-    ===> """) 
-    return int(input())
+    5-Criar Usuário
+    6-Criar Conta            
+    7-Sair 
+    ===> """)
+    try:
+        return int(input())
+    except ValueError:
+        print("Opção inválida! Por favor, insira um número de 1 a 7.")
+        return 0
 
 def depositar(saldo, valorD, extrato):
     if valorD >= 5:
         print("Deposito realizado com sucesso!")
         saldo += valorD
         extrato += "Depósito: R$%.2f\n" % valorD
-        print("Operaçao Realizada: Deposito\nValor: R$%.2f" % valorD)
+        print("Operação Realizada: Depósito\nValor: R$%.2f" % valorD)
     elif valorD == 0:
         print("Operação cancelada com sucesso!")
     else:      
@@ -37,7 +43,7 @@ def sacar(saldo, valorS, extrato, numero_saques, limite, LIMITE_SAQUE):
         extrato += "Saque: R$%.2f\n" % valorS
         numero_saques += 1  
         print("Saque realizado com sucesso!")
-        print("Operaçao Realizada: Saque\nValor: R$%.2f" % valorS)
+        print("Operação Realizada: Saque\nValor: R$%.2f" % valorS)
     else:      
         print("O valor informado é inválido!") 
     return saldo, extrato, numero_saques  
@@ -62,12 +68,13 @@ def transferencia(saldo, valort, extrato, numero_trans, LIMITE_TRANS):
         saldo -= valort
         numero_trans += 1
         print("Transferência realizada com sucesso!")
-        print("Operaçao Realizada: Transferência\nValor: R$%.2f" % valort)           
+        print("Operação Realizada: Transferência\nValor: R$%.2f" % valort)           
         extrato += "Transferência: R$%.2f\n" % valort
 
     return saldo, extrato, numero_trans        
 
 def principal():
+    AGENCIA = 0
     saldo = 0
     limite = 500
     extrato = ""
@@ -75,41 +82,93 @@ def principal():
     numero_trans = 0
     LIMITE_TRANS = 3
     LIMITE_SAQUE = 3
+    usuarios = []
+    contas = []
 
     while True:
         opcao = menu()
-        # ----OPÇÃO 1
+        #OPÇÃO 1
         if opcao == 1:
-            print("Deposito :")
-            valorD = float(input("Qual valor deseja depositar? "))
-            saldo, extrato = depositar(saldo, valorD, extrato)
-
-        # -----OPÇÃO 2 
+            print("Depósito:")
+            try:
+                valorD = float(input("Qual valor deseja depositar? "))
+                saldo, extrato = depositar(saldo, valorD, extrato)
+            except ValueError:
+                print("Valor inválido! Por favor, insira um número.")
+        #OPÇÃO 2
         elif opcao == 2:
             print("Saque:") 
-            valorS = float(input("Qual valor deseja sacar? "))
-            saldo, extrato, numero_saques = sacar(
-                saldo=saldo,
-                valorS=valorS,
-                extrato=extrato,
-                numero_saques=numero_saques,
-                limite=limite,
-                LIMITE_SAQUE=LIMITE_SAQUE
-            )
-        #----OPCÃO 3
+            try:
+                valorS = float(input("Qual valor deseja sacar? "))
+                saldo, extrato, numero_saques = sacar(
+                    saldo=saldo,
+                    valorS=valorS,
+                    extrato=extrato,
+                    numero_saques=numero_saques,
+                    limite=limite,
+                    LIMITE_SAQUE=LIMITE_SAQUE
+                )
+            except ValueError:
+                print("Valor inválido! Por favor, insira um número.")
+           #OPÇÃO 3     
         elif opcao == 3:
             exibindo_extrato(saldo, extrato=extrato)
-        # ----OPÇÃO 4     
+          #OPÇÃO 4
         elif opcao == 4:
             print("Transferência:") 
-            valort = float(input("Qual valor deseja transferir? "))
-            saldo, extrato, numero_trans = transferencia(
-                saldo, valort, extrato, numero_trans, LIMITE_TRANS
-            )
+            try:
+                valort = float(input("Qual valor deseja transferir? "))
+                saldo, extrato, numero_trans = transferencia(
+                    saldo, valort, extrato, numero_trans, LIMITE_TRANS
+                )
+            except ValueError:
+                print("Valor inválido! Por favor, insira um número.")
+           #OPÇÃO 5     
         elif opcao == 5:
+            criar_user(usuarios) 
+         #OPÇÃO 6
+        elif opcao == 6:
+            numero_conta = len(contas) + 1
+            conta = criar_contas(AGENCIA, numero_conta, usuarios)  
+            if conta:
+                contas.append(conta)
+        #OPÇÃO 7
+        elif opcao == 7:
             print("Obrigado por usar nosso serviço")
             break
+        ##FIM
         else:
-            print("Opção inválida!")
+            if opcao != 0:
+                print("Opção inválida!")
+
+def criar_user(usuarios):
+    try:
+        cpf = int(input("Informe seu CPF (SOMENTE NÚMEROS): "))
+        usuario = filtrar_user(cpf, usuarios)
+        if usuario:
+            print("Já existe um usuário com este CPF!")
+            return
+        nome = input("Digite seu nome completo: ")
+        data_nascimento = input("Informe sua data de nascimento (dd-mm-aaaa): ")    
+        endereco = input("Informe seu endereço (Rua, Bairro, Cidade/Estado): ")
+        usuarios.append({"Nome": nome, "Data de Nascimento": data_nascimento, "Endereço": endereco, "CPF": cpf})
+        print("Usuário criado com sucesso!")
+    except ValueError:
+        print("CPF inválido! Por favor, insira um número.")
+
+def filtrar_user(cpf, usuarios): 
+    usuarios_filtrados = [usuario for usuario in usuarios if usuario["CPF"] == cpf]
+    return usuarios_filtrados[0] if usuarios_filtrados else None
+
+def criar_contas(AGENCIA, numero_conta, usuarios):
+    try:
+        cpf = int(input("Informe seu CPF (SOMENTE NÚMEROS): "))
+        usuario = filtrar_user(cpf, usuarios) 
+        if usuario:
+            print("Conta criada com sucesso!")
+            return {"Agencia": AGENCIA, "Numero da conta": numero_conta, "Usuário": usuario}
+        print("Usuário não encontrado!")
+    except ValueError:
+        print("CPF inválido! Por favor, insira um número.")
 
 principal()
