@@ -13,15 +13,15 @@ def baskara(delta,b,a):
    #----------------
    c1= -b-raiz_delta
    c2=c1/calc2
-   return calc3,c2
+   return f"O valor de x' é:{calc3},e o x'' é:{c2}"
 
 def main():
   a=0
   b=0
   c=0
-  a=int(input("Digite o valor de A "))
-  b=int(input("Digite o valor de B "))
-  c=int(input("Digite o valor de C "))
+  a=int(input("Digite o valor de A: "))
+  b=int(input("Digite o valor de B: "))
+  c=int(input("Digite o valor de C: "))
   resul_delta=delta(a,b,c)
   x1_x2=baskara(resul_delta,b,a)
   print(x1_x2)
