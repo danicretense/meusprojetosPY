@@ -1,10 +1,11 @@
+from datetime import datetime
 def menu():
     print(""" 
     Escolha uma opção:
     1-Depositar
     2-Sacar  
     3-Extrato
-    4-Transferência
+    4-Transferência         
     5-Criar Usuário
     6-Criar Conta            
     7-Sair 
@@ -16,11 +17,15 @@ def menu():
         return 0
 
 def depositar(saldo, valorD, extrato):
+    horario=datetime.now()
+    horario_format=horario.strftime("Feito Às: %H:%M")
     if valorD >= 5:
         print("Deposito realizado com sucesso!")
         saldo += valorD
-        extrato += "Depósito: R$%.2f\n" % valorD
-        print("Operação Realizada: Depósito\nValor: R$%.2f" % valorD)
+        extrato += " Depósito: R$%.2f\n" % valorD
+        extrato+=horario_format
+        print("Operação Realizada: Depósito\nValor: R$%.2f" %valorD )
+
     elif valorD == 0:
         print("Operação cancelada com sucesso!")
     else:      
