@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 Root=Path(__file__).parent
 #----Lendo arquivos csv
-with open('Arquivos csv\Testando.csv','r') as meu: 
+with open('Testando.csv','r') as meu: 
   lendo=csv.reader(meu)
   for row in lendo:
       print(row)
