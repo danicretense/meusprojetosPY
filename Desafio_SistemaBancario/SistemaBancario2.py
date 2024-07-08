@@ -15,15 +15,17 @@ def menu():
     except ValueError:
         print("Opção inválida! Por favor, insira um número de 1 a 7.")
         return 0
+def mostra_data():
+  horario=datetime.now()
+  horario_format=horario.strftime("%d/%m %H:%M\n----------")
+  return horario_format
 
 def depositar(saldo, valorD, extrato):
-    horario=datetime.now()
-    horario_format=horario.strftime("Feito Às: %H:%M")
     if valorD >= 5:
         print("Deposito realizado com sucesso!")
         saldo += valorD
-        extrato += " Depósito: R$%.2f\n" % valorD
-        extrato+=horario_format
+        extrato += "\nDepósito: R$%.2f\n" % valorD
+        extrato+=mostra_data()
         print("Operação Realizada: Depósito\nValor: R$%.2f" %valorD )
 
     elif valorD == 0:
@@ -45,7 +47,8 @@ def sacar(saldo, valorS, extrato, numero_saques, limite, LIMITE_SAQUE):
         print("Operação falhou! Número máximo de saques excedido.")
     elif valorS > 0:
         saldo -= valorS  
-        extrato += "Saque: R$%.2f\n" % valorS
+        extrato += "\nSaque: R$%.2f\n" % valorS
+        extrato+= mostra_data()
         numero_saques += 1  
         print("Saque realizado com sucesso!")
         print("Operação Realizada: Saque\nValor: R$%.2f" % valorS)
@@ -74,7 +77,8 @@ def transferencia(saldo, valort, extrato, numero_trans, LIMITE_TRANS):
         numero_trans += 1
         print("Transferência realizada com sucesso!")
         print("Operação Realizada: Transferência\nValor: R$%.2f" % valort)           
-        extrato += "Transferência: R$%.2f\n" % valort
+        extrato += "\nTransferência: R$%.2f\n" % valort
+        extrato+= mostra_data()
 
     return saldo, extrato, numero_trans        
 
