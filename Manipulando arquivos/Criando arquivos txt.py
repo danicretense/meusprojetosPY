@@ -4,7 +4,7 @@ import os, shutil
 mostrar=open('arquivo.txt','r')
 #print(mostrar.read())
 #print(mostrar.readline())
-#print(mostrar.readlines())
+print(mostrar.readlines())
 mostrar.close()
 #Escrevendo em um arquivo
 m=open('ask.txt','w')
