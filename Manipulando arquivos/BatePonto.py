@@ -1,11 +1,10 @@
 import csv
 from datetime import datetime
-
-def pega_data(data, df):
-    """Escreve a data e o horário de entrada e saída no arquivo CSV."""
-    with open('Folha de ponto.csv', 'w', newline='') as novo:
-        escrevendo = csv.writer(novo)
-        escrevendo.writerow([data, df])
+def covertendo(saida,entrada):
+    c1=datetime.strptime(entrada,'%d/%m/%Y %H:%M')
+    diferenca= saida-c1
+    
+    return 
 
 def ponto_entrada(entrada):
     """Guarda a data e horário de entrada no arquivo de texto."""
@@ -17,11 +16,12 @@ def lendo_arquivo():
     with open('entradas.txt', 'r') as lendo:
         valores = lendo.readline().strip()
     return valores
-def covertendo(saida,entrada):
-    c1=datetime.strptime(entrada,'%d/%m/%Y %H:%M')
-    diferenca= saida-c1
-    return diferenca
 
+def pega_data(data, df):
+    """Escreve a data e o horário de entrada e saída no arquivo CSV."""
+    with open('Folha de ponto.csv', 'w', newline='') as novo:
+        escrevendo = csv.writer(novo)
+        escrevendo.writerow([data, df])
 data_formatada = None
 condicao = input('Ponto de entrada ou de saída? (e/s) ').strip().lower()
 
