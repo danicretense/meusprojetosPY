@@ -1,10 +1,17 @@
-import csv
-from datetime import datetime
-def covertendo(saida,entrada):
-    c1=datetime.strptime(entrada,'%d/%m/%Y %H:%M')
-    diferenca= saida-c1
-    
-    return 
+import csv  
+from datetime import datetime, timedelta
+
+def covertendo(saida, entrada):
+    c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M')
+    diferenca = saida - c1
+    return diferenca
+
+def formatar_timedelta(td):
+    total_seconds = int(td.total_seconds())
+    days, remainder = divmod(total_seconds, 86400)
+    hours,remainder = divmod(remainder, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours} horas, {minutes} minutos"  
 
 def ponto_entrada(entrada):
     """Guarda a data e horário de entrada no arquivo de texto."""
@@ -12,17 +19,19 @@ def ponto_entrada(entrada):
         guardando.write(entrada)
 
 def lendo_arquivo():
-    """pega a data e a hora que esta guardada na função ponto_entrada"""
+    """Pega a data e a hora que está guardada na função ponto_entrada."""
     with open('entradas.txt', 'r') as lendo:
         valores = lendo.readline().strip()
     return valores
 
 def pega_data(data, df):
     """Escreve a data e o horário de entrada e saída no arquivo CSV."""
-    with open('Folha de ponto.csv', 'w', newline='') as novo:
+    diferenca = covertendo(datetime.strptime(df, '%d/%m/%Y %H:%M'), data)
+    with open('Folha de ponto.csv', 'a', newline='') as novo:
         escrevendo = csv.writer(novo)
-        escrevendo.writerow([data, df])
-data_formatada = None
+        escrevendo.writerow(['Data de Entrada', 'Data de Saida', 'Tempo Trabalhado'])
+        escrevendo.writerow([data, df, formatar_timedelta(diferenca)])
+
 condicao = input('Ponto de entrada ou de saída? (e/s) ').strip().lower()
 
 if condicao == 'e':
@@ -34,8 +43,10 @@ elif condicao == 's':
     nome = input('Digite seu nome novamente: ')
     da = datetime.now()
     df = da.strftime('%d/%m/%Y %H:%M')
-    pega_data(lendo_arquivo(), df)
-    print(covertendo(da,lendo_arquivo()))
+    entrada = lendo_arquivo()
+    pega_data(entrada, df)
+    diferenca = covertendo(da, entrada)
+    formatar_timedelta(diferenca)
 else:
     print('Opção inválida. Digite "e" para entrada ou "s" para saída.')
  
