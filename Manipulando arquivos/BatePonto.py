@@ -49,3 +49,4 @@ elif condicao == 's':
     formatar_timedelta(diferenca)
 else:
     print('Opção inválida. Digite "e" para entrada ou "s" para saída.')
+ 
