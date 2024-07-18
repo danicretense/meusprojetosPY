@@ -8,8 +8,7 @@ def covertendo(saida, entrada):
 
 def formatar_timedelta(td):
     total_seconds = int(td.total_seconds())
-    days, remainder = divmod(total_seconds, 86400)
-    hours, remainder = divmod(remainder, 3600)
+    hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     return f"{hours} horas, {minutes} minutos, {seconds} segundos"
 
@@ -29,8 +28,20 @@ def pega_data(data, df):
     diferenca = covertendo(datetime.strptime(df, '%d/%m/%Y %H:%M'), data)
     with open('Folha de ponto.csv', 'a', newline='') as novo:
         escrevendo = csv.writer(novo)
-        escrevendo.writerow(['Data de Entrada', 'Data de Saida', 'Tempo Trabalhado'])
         escrevendo.writerow([data, df, formatar_timedelta(diferenca)])
+        
+        
+def inicializa_csv():
+    """Inicializa o arquivo CSV com o cabeçalho, caso ainda não exista."""
+    try:
+        with open('Folha de ponto.csv', 'r') as file:
+            pass
+    except FileNotFoundError:
+        with open('Folha de ponto.csv', 'w', newline='') as novo:
+            escrevendo = csv.writer(novo)
+            escrevendo.writerow(['Data de Entrada', 'Data de Saída', 'Tempo Trabalhado'])
+
+inicializa_csv()        
 
 condicao = input('Ponto de entrada ou de saída? (e/s) ').strip().lower()
 
