@@ -39,7 +39,7 @@ def inicializa_csv():
     except FileNotFoundError:
         with open('Folha de ponto.csv', 'w', newline='') as novo:
             escrevendo = csv.writer(novo)
-            escrevendo.writerow(['Data de Entrada', 'Data de Saída', 'Tempo Trabalhado'])
+            escrevendo.writerow(['INICIO', 'TERMINO', 'TEMPO DE ESTUDO'])
 
 inicializa_csv()        
 
