@@ -1,3 +1,4 @@
+import os
 import csv
 from datetime import datetime, timedelta
 
@@ -41,7 +42,7 @@ def inicializa_csv():
             escrevendo = csv.writer(novo)
             escrevendo.writerow(['INICIO', 'TERMINO', 'TEMPO DE ESTUDO'])
 
-inicializa_csv()        
+#inicializa_csv()        
 
 condicao = input('Ponto de entrada ou de saída? (e/s) ').strip().lower()
 
@@ -58,6 +59,7 @@ elif condicao == 's':
     pega_data(entrada, df)
     diferenca = covertendo(da, entrada)
     formatar_timedelta(diferenca)
+    os.remove("entradas.txt")
 else:
     print('Opção inválida. Digite "e" para entrada ou "s" para saída.')
  
