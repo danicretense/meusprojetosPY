@@ -51,17 +51,16 @@ if condicao=='e':
    data = datetime.now()
    data_formatada = data.strftime('%d/%m/%Y %H:%M')
    ponto_entrada(data_formatada)
-entrada = lendo_arquivo()
-os.remove("entradas.txt")
-if condicao=='s':
+
+elif condicao=='s':
   nome = input('Digite seu nome novamente: ')
   da = datetime.now()
   df = da.strftime('%d/%m/%Y %H:%M')
-  #entrada = lendo_arquivo()
+  entrada = lendo_arquivo()
   pega_data(entrada, df)
   diferenca = covertendo(da, entrada)
   formatar_timedelta(diferenca)
-    #os.remove("entradas.txt")
+  os.remove("entradas.txt")
 
 
  
