@@ -46,22 +46,22 @@ def inicializa_csv():
 
 condicao = input('Ponto de entrada ou de saída? (e/s) ').strip().lower()
 
-#if condicao == 'e':
-nome = input('Digite seu nome: ')
-data = datetime.now()
-data_formatada = data.strftime('%d/%m/%Y %H:%M')
-ponto_entrada(data_formatada)
+if condicao=='e':
+   nome = input('Digite seu nome: ')
+   data = datetime.now()
+   data_formatada = data.strftime('%d/%m/%Y %H:%M')
+   ponto_entrada(data_formatada)
 entrada = lendo_arquivo()
-
-#elif condicao == 's':
-nome = input('Digite seu nome novamente: ')
-da = datetime.now()
-df = da.strftime('%d/%m/%Y %H:%M')
-    #entrada = lendo_arquivo()
-pega_data(entrada, df)
-diferenca = covertendo(da, entrada)
-formatar_timedelta(diferenca)
+os.remove("entradas.txt")
+if condicao=='s':
+  nome = input('Digite seu nome novamente: ')
+  da = datetime.now()
+  df = da.strftime('%d/%m/%Y %H:%M')
+  #entrada = lendo_arquivo()
+  pega_data(entrada, df)
+  diferenca = covertendo(da, entrada)
+  formatar_timedelta(diferenca)
     #os.remove("entradas.txt")
-#else:
-   # print('Opção inválida. Digite "e" para entrada ou "s" para saída.')
+
+
  
