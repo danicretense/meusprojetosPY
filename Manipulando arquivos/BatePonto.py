@@ -2,6 +2,7 @@ import os
 import csv
 from datetime import datetime, timedelta
 
+
 def covertendo(saida, entrada):
     c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M')
     diferenca = saida - c1
