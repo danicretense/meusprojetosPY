@@ -1,7 +1,7 @@
 import os
 import csv
 from datetime import datetime, timedelta
-
+from tkinter import Tk
 
 def covertendo(saida, entrada):
     c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M')
@@ -63,5 +63,6 @@ elif condicao=='s':
   formatar_timedelta(diferenca)
   os.remove("entradas.txt")
 
-
+janela=Tk()
  
+janela.mainloop
