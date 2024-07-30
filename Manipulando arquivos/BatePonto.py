@@ -5,6 +5,8 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 from PIL import Image, ImageTk
+from tkinter import messagebox
+
 def main():
  def covertendo(saida, entrada):
     c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M')
@@ -36,6 +38,8 @@ def main():
         escrevendo.writerow([data, df, formatar_timedelta(diferenca)])
  def create_interface():
     # Criação da janela principal
+    
+
     root = tk.Tk()
     root.geometry("1994x834")  # Define o tamanho da janela (ajuste conforme necessário)
     root.title("FLOOR")
@@ -53,34 +57,46 @@ def main():
     entry2 = tk.Entry(root)
     entry2.place(x=440, y=350,width=500, height=35)
     def comando():
-       escolhido=combobox.get()
-       if escolhido=="INICIO":
-        data = datetime.now()
-        data_formatada = data.strftime('%d/%m/%Y %H:%M')
-        ponto_entrada(data_formatada)
-        label1=tk.Label(root,text="Registrado")
-        label1.place(x=630,y=460)
+       very=entry2.get()
+       if very=="Daniela".title():
+        escolhido=combobox.get()
+        if escolhido=="INICIO":
+         data = datetime.now()
+         data_formatada = data.strftime('%d/%m/%Y %H:%M')
+         ponto_entrada(data_formatada)
+         messagebox.showinfo("FLOOR DIZ: ", "REGISTRADO!") 
+        else:
+         da = datetime.now()
+         df = da.strftime('%d/%m/%Y %H:%M')
+         entrada = lendo_arquivo()
+         pega_data(entrada, df)
+         diferenca = covertendo(da, entrada)
+         formatar_timedelta(diferenca)
+         messagebox.showinfo("FLOOR DIZ:", "REGISTRADO!")
+         os.remove("entradas.txt") 
        else:
-        da = datetime.now()
-        df = da.strftime('%d/%m/%Y %H:%M')
-        entrada = lendo_arquivo()
-        pega_data(entrada, df)
-        diferenca = covertendo(da, entrada)
-        formatar_timedelta(diferenca)
-        label1=tk.Label(root,text="Registrado")
-        label1.place(x=630,y=460)
-        os.remove("entradas.txt") 
+          messagebox.showinfo("FLOOR DIZ:", "NOME DE USUÁRIO INCORRETO")
+        
+
+      
+      
+        
     # Adicionar o botão
     butao= ctk.CTkButton(root, text="REGISTRAR",command=comando)
     butao.place(x=630, y=420)
     
     
+    def fechar_janela_principal():
+     root.destroy() 
     
     #--------------
     #Adicionando outro botão
-    
+    butao_sair=ctk.CTkButton(root,text='Sair',command=fechar_janela_principal)
+    butao_sair.place(x=630,y=460)
     
     # Loop principal da interface gráfica
+    
     root.mainloop()
+    root.event_delete
  create_interface()
 main()
