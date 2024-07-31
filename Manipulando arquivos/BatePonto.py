@@ -8,8 +8,13 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 
 def main():
+ def cabecalho():
+   with open('Folha de ponto.csv','w',newline='') as file:
+      cabecalho_=csv.writer(file)
+      cabecalho_.writerow(["INICIO","TERMINO","TEMPO ESTUDADO"])
+ cabecalho()
  def covertendo(saida, entrada):
-    c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M')
+    c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M:%S')
     diferenca = saida - c1
     return diferenca
 
@@ -32,10 +37,12 @@ def main():
 
  def pega_data(data, df):
     """Escreve a data e o horário de entrada e saída no arquivo CSV."""
-    diferenca = covertendo(datetime.strptime(df, '%d/%m/%Y %H:%M'), data)
+    diferenca = covertendo(datetime.strptime(df, '%d/%m/%Y %H:%M:%S'), data)
     with open('Folha de ponto.csv', 'a', newline='') as novo:
         escrevendo = csv.writer(novo)
         escrevendo.writerow([data, df, formatar_timedelta(diferenca)])
+ 
+    
  def create_interface():
     # Criação da janela principal
     
@@ -50,25 +57,27 @@ def main():
     image_label.place(x=550, y=-20)
     #ADICONANDO COMBO BOX
     options = ["INICIO","TÉRMINO"]
-    combobox = ttk.Combobox(root, values=options, state='readonly')
-    combobox.place(x=440, y=300, width=500, height=35)
+    combobox = customtkinter.CTkComboBox(root, values=options, state='readonly',width=500, height=35)
+    combobox.place(x=440, y=300)
+    combobox._set_appearance_mode('light')
     combobox.set("INICIO")
     # Adicionar o campo de entrada de texto
     entry2 = customtkinter.CTkEntry(root,placeholder_text='DIGITE SEU NOME: ',width=500, height=35)
     entry2.place(x=440, y=350)
+    
     entry2._set_appearance_mode('light')
     def comando():
-       very=entry2.get()
-       if very=="Daniela".title():
+       very=entry2.get().title()
+       if very=="Daniela":
         escolhido=combobox.get()
         if escolhido=="INICIO":
          data = datetime.now()
-         data_formatada = data.strftime('%d/%m/%Y %H:%M')
+         data_formatada = data.strftime('%d/%m/%Y %H:%M:%S')
          ponto_entrada(data_formatada)
          messagebox.showinfo("FLOOR DIZ: ", "REGISTRADO!") 
         else:
          da = datetime.now()
-         df = da.strftime('%d/%m/%Y %H:%M')
+         df = da.strftime('%d/%m/%Y %H:%M:%S')
          entrada = lendo_arquivo()
          pega_data(entrada, df)
          diferenca = covertendo(da, entrada)
