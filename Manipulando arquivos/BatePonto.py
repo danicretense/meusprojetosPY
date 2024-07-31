@@ -3,7 +3,7 @@ import csv
 from datetime import datetime, timedelta
 import tkinter as tk
 from tkinter import ttk
-import customtkinter as ctk
+import customtkinter
 from PIL import Image, ImageTk
 from tkinter import messagebox
 
@@ -54,8 +54,9 @@ def main():
     combobox.place(x=440, y=300, width=500, height=35)
     combobox.set("INICIO")
     # Adicionar o campo de entrada de texto
-    entry2 = tk.Entry(root)
-    entry2.place(x=440, y=350,width=500, height=35)
+    entry2 = customtkinter.CTkEntry(root,placeholder_text='DIGITE SEU NOME: ',width=500, height=35)
+    entry2.place(x=440, y=350)
+    entry2._set_appearance_mode('light')
     def comando():
        very=entry2.get()
        if very=="Daniela".title():
@@ -82,7 +83,7 @@ def main():
       
         
     # Adicionar o botão
-    butao= ctk.CTkButton(root, text="REGISTRAR",command=comando)
+    butao= customtkinter.CTkButton(root, text="REGISTRAR",command=comando)
     butao.place(x=630, y=420)
     
     
@@ -91,7 +92,7 @@ def main():
     
     #--------------
     #Adicionando outro botão
-    butao_sair=ctk.CTkButton(root,text='Sair',command=fechar_janela_principal)
+    butao_sair=customtkinter.CTkButton(root,text='Sair',command=fechar_janela_principal)
     butao_sair.place(x=630,y=460)
     
     # Loop principal da interface gráfica
