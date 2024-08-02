@@ -88,9 +88,20 @@ def main():
           messagebox.showinfo("FLOOR DIZ:", "NOME DE USUÁRIO INCORRETO")
         
 
-      
-      
-        
+    def janela_registro():
+       combobox.destroy()
+       entry2.destroy()
+       butao.destroy()
+       cria_user.destroy()
+       entrada1 = customtkinter.CTkEntry(root,placeholder_text='DIGITE SEU NOME: ',width=500, height=35)
+       entrada1.place(x=440, y=300)
+       entrada2 = customtkinter.CTkEntry(root,placeholder_text='CRIE SEU RE: ',width=500, height=35)
+       entrada2.place(x=440, y=350)
+       criando=customtkinter.CTkButton(root,text='SALVAR')
+       criando.place(x=630, y=420)
+       bt_voltar=customtkinter.CTkButton(root,text="VOLTAR",command=create_interface)
+       bt_voltar.place(x=630,y=500)
+          
     # Adicionar o botão
     butao= customtkinter.CTkButton(root, text="REGISTRAR",command=comando)
     butao.place(x=630, y=420)
@@ -100,10 +111,12 @@ def main():
      root.destroy() 
     
     #--------------
-    #Adicionando outro botão
-    butao_sair=customtkinter.CTkButton(root,text='Sair',command=fechar_janela_principal)
-    butao_sair.place(x=630,y=460)
-    
+    #Adicionando outros botão
+    butao_sair=customtkinter.CTkButton(root,text='SAIR',command=fechar_janela_principal,width=100)
+    butao_sair.place(x=650,y=460)
+   
+    cria_user=customtkinter.CTkButton(root,text="CRIAR USUÁRIO",command=janela_registro)
+    cria_user.place(x=630,y=500)
     # Loop principal da interface gráfica
     
     root.mainloop()
