@@ -12,7 +12,7 @@ def main():
    with open('Folha de ponto.csv','w',newline='') as file:
       cabecalho_=csv.writer(file)
       cabecalho_.writerow(["INICIO","TERMINO","TEMPO ESTUDADO"])
- cabecalho()
+ #cabecalho()
  def covertendo(saida, entrada):
     c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M:%S')
     diferenca = saida - c1
