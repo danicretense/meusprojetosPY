@@ -40,11 +40,12 @@ def main():
         """Escreve a data e o horário de entrada e saída no arquivo CSV."""
         diferenca = covertendo(datetime.strptime(df, '%d/%m/%Y %H:%M:%S'), data)
         with open('Folha de ponto.csv', 'a', newline='') as novo:
-            escrevendo = csv.writer(novo)
-            escrevendo.writerow([data, df, formatar_timedelta(diferenca)])
+            csv.register_dialect('my_dialect', delimiter=';')
+            escrevendo = csv.writer(novo,dialect='my_dialect')
+            escrevendo.writerow([data, df,formatar_timedelta(diferenca)])
 
     def create_interface():
-        # Criação da janela principal
+        # Criação da janela principal dd
         root = tk.Tk()
         root.geometry("1994x834")  # Define o tamanho da janela (ajuste conforme necessário)
         root.title("FLOOR")
@@ -56,15 +57,14 @@ def main():
         
         # Adicionando combo box
         options = ["INICIO", "TÉRMINO"]
-        combobox = customtkinter.CTkComboBox(root, values=options, state='readonly', width=500, height=35)
-        combobox.place(x=440, y=300)
-        combobox._set_appearance_mode('light')
+        combobox = ttk.Combobox(root, values=options, state='readonly')
+        combobox.place(x=440, y=300, width=500, height=35)
         combobox.set("INICIO")
         
         # Adicionar o campo de entrada de texto
-        entry2 = customtkinter.CTkEntry(root, placeholder_text='DIGITE SEU NOME: ', width=500, height=35)
-        entry2.place(x=440, y=350)
-        entry2._set_appearance_mode('light')
+        entry2 =ttk.Entry(root)
+        entry2.place(x=440, y=350, width=500, height=35)
+        
         
         def comando():
             very = entry2.get().title()
@@ -88,8 +88,8 @@ def main():
                 messagebox.showinfo("FLOOR DIZ:", "NOME DE USUÁRIO INCORRETO")
 
         def voltar():
-            combobox.place(x=440, y=300)
-            entry2.place(x=440, y=350)
+            combobox.place(x=440, y=300, width=500, height=35)
+            entry2.place(x=440, y=350, width=500, height=35)
             butao.place(x=630, y=420)
             cria_user.place(x=630, y=500)
             butao_sair.place(x=650, y=460)

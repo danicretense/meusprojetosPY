@@ -14,3 +14,4 @@ with open (Root/'Nova tabela.csv','w')as arquivo:
   escrevendo.writerow(['Doritos',3.45])
   escrevendo.writerow(['Ruffles',5.00])
   escrevendo.writerow(['Yulo',2.88])
+  
