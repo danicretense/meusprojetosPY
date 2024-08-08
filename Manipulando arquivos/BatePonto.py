@@ -78,6 +78,7 @@ def main():
         # Função para o comando de registro de entrada/saída
         def comando():
             valor = entry2.get()
+            #valor1= senha.get()
             conexao = mysql.connector.connect(
                 host='localhost',
                 user='root',
@@ -92,8 +93,9 @@ def main():
             conexao.close()
 
             for i in registros:
-                registro = i[1]
-                if registro == valor:
+                registro_user = i[1]
+               
+                if valor==registro_user:
                     escolhido = combobox.get()
                     if escolhido == "INICIO":
                         data = datetime.now()
@@ -114,10 +116,14 @@ def main():
 
         def voltar():
             combobox.place(x=440, y=300, width=500, height=35)
-            entry2.place(x=440, y=350, width=500, height=35)
-            butao.place(x=630, y=420)
-            cria_user.place(x=630, y=500)
-            butao_sair.place(x=650, y=460)
+            entry2.place(x=440, y=370, width=500, height=35)
+            butao.place(x=630, y=500)
+            cria_user.place(x=630, y=580)
+            butao_sair.place(x=650, y=540)
+            digite_user.place(x=440,y=350)
+            escolha_entrada.place(x=440,y=280)
+            label_pass.place(x=440,y=420)
+            senha.place(x=440,y=440,width=500,height=35)
             entrada1.place_forget()
             entrada2.place_forget()
             bt_voltar.place_forget()
@@ -128,12 +134,17 @@ def main():
             entry2.place_forget()
             butao.place_forget()
             cria_user.place_forget()
+            escolha_entrada.place_forget()
+            digite_user.place_forget()
+            label_pass.place_forget()
+            senha.place_forget()
             entrada1.place(x=440, y=300)
             entrada1._set_appearance_mode('light')
             entrada2.place(x=440, y=350)
             entrada2._set_appearance_mode('light')
             criando.place(x=630, y=420)
-            bt_voltar.place(x=630, y=500)
+            bt_voltar.place(x=630, y=460)
+            butao_sair.place(x=650, y=500)
         
         def fechar_janela_principal():
             root.destroy()
@@ -147,27 +158,36 @@ def main():
         photo = ImageTk.PhotoImage(image)
         image_label = tk.Label(root, image=photo)
         image_label.place(x=550, y=-20)
-        
+        #Adicionando Label
+        escolha_entrada=ttk.Label(root,text="TIPO DE ENTRADA: ")
+        escolha_entrada.place(x=440,y=280)
         # Adicionando combo box
         options = ["INICIO", "TÉRMINO"]
         combobox = ttk.Combobox(root, values=options, state='readonly')
         combobox.place(x=440, y=300, width=500, height=35)
         combobox.set("INICIO")
-        
+        #Adicionando outro Label
+        digite_user=ttk.Label(root,text="DIGITE SEU USUÁRIO: ")
+        digite_user.place(x=440,y=350)
         # Adicionar o campo de entrada de texto
         entry2 = ttk.Entry(root)
-        entry2.place(x=440, y=350, width=500, height=35)
-        
+        entry2.place(x=440, y=370, width=500, height=35)
+        #Label pedindo senha
+        label_pass= ttk.Label(root,text="DIGITE SEU CÓDIGO DE USUÁRIO: ")
+        label_pass.place(x=440,y=420)
+        #Entrada Para senha
+        senha=ttk.Entry(root)
+        senha.place(x=440,y=440,width=500,height=35)
         # Adicionar o botão
         butao = customtkinter.CTkButton(root, text="REGISTRAR", command=comando)
-        butao.place(x=630, y=420)
+        butao.place(x=630, y=500)
 
         # Adicionando outros botões
         butao_sair = customtkinter.CTkButton(root, text='SAIR', command=fechar_janela_principal, width=100)
-        butao_sair.place(x=650, y=460)
+        butao_sair.place(x=650, y=540)
 
         cria_user = customtkinter.CTkButton(root, text="CRIAR USUÁRIO", command=janela_registro)
-        cria_user.place(x=630, y=500)
+        cria_user.place(x=630, y=580)
 
         entrada1 = customtkinter.CTkEntry(root, placeholder_text='DIGITE SEU NOME: ', width=500, height=35)
         entrada2 = customtkinter.CTkEntry(root, placeholder_text='CRIE SEU CÓDIGO DE USUARIO: ', width=500, height=35)
