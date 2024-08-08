@@ -11,10 +11,11 @@ import mysql.connector
 def main():
     def cabecalho():
         with open('Folha de ponto.csv', 'w', newline='') as file:
-            cabecalho_ = csv.writer(file)
+            csv.register_dialect('my_dialect', delimiter=';')
+            cabecalho_ = csv.writer(file,dialect='my_dialect')
             cabecalho_.writerow(["INICIO", "TERMINO", "TEMPO ESTUDADO"])
 
-    cabecalho()
+    #cabecalho()
     def covertendo(saida, entrada):
         c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M:%S')
         diferenca = saida - c1
@@ -94,7 +95,7 @@ def main():
 
             for i in registros:
                 registro_user = i[1]
-               
+                
                 if valor==registro_user:
                     escolhido = combobox.get()
                     if escolhido == "INICIO":
