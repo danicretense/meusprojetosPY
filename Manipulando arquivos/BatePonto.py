@@ -12,13 +12,11 @@ def main():
     def cabecalho():
         with open('Folha de ponto.csv', 'w', newline='') as file:
             csv.register_dialect('my_dialect', delimiter=';')
-            cabecalho_ = csv.writer(file,dialect='my_dialect')
+            cabecalho_ = csv.writer(file, dialect='my_dialect')
             cabecalho_.writerow(["INICIO", "TERMINO", "TEMPO ESTUDADO"])
 
-    #cabecalho()
-    def covertendo(saida, entrada):
-        c1 = datetime.strptime(entrada, '%d/%m/%Y %H:%M:%S')
-        diferenca = saida - c1
+    def calculando(saida, entrada):
+        diferenca = saida - entrada
         return diferenca
 
     def formatar_timedelta(td):
@@ -27,27 +25,16 @@ def main():
         minutes, seconds = divmod(remainder, 60)
         return f"{hours} horas, {minutes} minutos, {seconds} segundos"
 
-    def ponto_entrada(entrada):
-        """Guarda a data e horário de entrada no arquivo de texto."""
-        with open('entradas.txt', 'w') as guardando:
-            guardando.write(entrada)
+    
 
-    def lendo_arquivo():
-        """Pega a data e a hora que está guardada na função ponto_entrada."""
-        with open('entradas.txt', 'r') as lendo:
-            valores = lendo.readline().strip()
-        return valores
-
-    def pega_data(data, df):
-        """Escreve a data e o horário de entrada e saída no arquivo CSV."""
-        diferenca = covertendo(datetime.strptime(df, '%d/%m/%Y %H:%M:%S'), data)
+    def pega_data(data, df,s,e):
+        diferenca= calculando(s,e)
         with open('Folha de ponto.csv', 'a', newline='') as novo:
             csv.register_dialect('my_dialect', delimiter=';')
             escrevendo = csv.writer(novo, dialect='my_dialect')
             escrevendo.writerow([data, df, formatar_timedelta(diferenca)])
 
     def create_interface():
-        # Função para registrar o usuário
         def registrando():
             usuario = entrada1.get()
             cd_user = entrada2.get()
@@ -76,10 +63,9 @@ def main():
                 cursor.close()
                 conexao.close()
 
-        # Função para o comando de registro de entrada/saída
         def comando():
             valor = entry2.get()
-            #valor1= senha.get()
+            valor1 = senha.get()
             conexao = mysql.connector.connect(
                 host='localhost',
                 user='root',
@@ -87,33 +73,46 @@ def main():
                 database='db_floor',
             )
             cursor = conexao.cursor()
-            consulta = 'SELECT * FROM usuarios'
-            cursor.execute(consulta)
-            registros = cursor.fetchall()
+            consulta = 'SELECT * FROM usuarios WHERE nome_user = %s AND cd = %s'
+            cursor.execute(consulta, (valor, valor1))
+            registro = cursor.fetchone()
+            if not valor or not valor1:
+                messagebox.showwarning("FLOOR DIZ:", "Preencha todos os campos.")
+                return
+            if registro:
+                escolhido = combobox.get()  
+                if escolhido == "INICIO":
+                    data_inicio = [datetime.now()]
+                    comando = 'INSERT INTO registros (entradas) VALUES (%s)'
+                    valores = data_inicio
+                    cursor.execute(comando, valores)
+                    conexao.commit()
+                    messagebox.showinfo("FLOOR DIZ:", "REGISTRADO!")
+                else:
+                    data_final = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    cursor.execute('SELECT id FROM registros WHERE saidas IS NULL ORDER BY id DESC LIMIT 1')
+                    registro_id = cursor.fetchone()
+                    if registro_id:
+                     comando = 'UPDATE registros SET saidas = %s WHERE id = %s'
+                     cursor.execute(comando, (data_final, registro_id[0]))
+                     conexao.commit()
+                     messagebox.showinfo("FLOOR DIZ:", "TÉRMINO REGISTRADO!")
+                     comando= 'SELECT *FROM registros'
+                     cursor.execute(comando)
+                     en_sa=cursor.fetchall()
+                     for k in en_sa:
+                         entrada=k[1]
+                         saida=k[2]
+                         entra_format=entrada.strftime('%d/%m/%Y %H:%M:%S')
+                         sai_format=saida.strftime('%d/%m/%Y %H:%M:%S')
+                         pega_data(entra_format,sai_format,saida,entrada)
+                    else:
+                     messagebox.showwarning("FLOOR DIZ:", "Nenhum registro de início encontrado.")
+
+            else:
+                messagebox.showinfo("FLOOR DIZ:", "USUÁRIO NÃO ENCONTRADO")
             cursor.close()
             conexao.close()
-
-            for i in registros:
-                registro_user = i[1]
-                
-                if valor==registro_user:
-                    escolhido = combobox.get()
-                    if escolhido == "INICIO":
-                        data = datetime.now()
-                        data_formatada = data.strftime('%d/%m/%Y %H:%M:%S')
-                        ponto_entrada(data_formatada)
-                        messagebox.showinfo("FLOOR DIZ: ", "REGISTRADO!")
-                    else:
-                        da = datetime.now()
-                        df = da.strftime('%d/%m/%Y %H:%M:%S')
-                        entrada = lendo_arquivo()
-                        pega_data(entrada, df)
-                        diferenca = covertendo(da, entrada)
-                        formatar_timedelta(diferenca)
-                        messagebox.showinfo("FLOOR DIZ:", "REGISTRADO!")
-                        os.remove("entradas.txt")
-                    return
-            messagebox.showinfo("FLOOR DIZ:", "USUARIO NÃO ENCONTRADO")
 
         def voltar():
             combobox.place(x=440, y=300, width=500, height=35)
@@ -121,10 +120,10 @@ def main():
             butao.place(x=630, y=500)
             cria_user.place(x=630, y=580)
             butao_sair.place(x=650, y=540)
-            digite_user.place(x=440,y=350)
-            escolha_entrada.place(x=440,y=280)
-            label_pass.place(x=440,y=420)
-            senha.place(x=440,y=440,width=500,height=35)
+            digite_user.place(x=440, y=350)
+            escolha_entrada.place(x=440, y=280)
+            label_pass.place(x=440, y=420)
+            senha.place(x=440, y=440, width=500, height=35)
             entrada1.place_forget()
             entrada2.place_forget()
             bt_voltar.place_forget()
@@ -150,40 +149,37 @@ def main():
         def fechar_janela_principal():
             root.destroy()
 
-        # Criação da janela principal
         root = tk.Tk()
-        root.geometry("1994x834")  # Define o tamanho da janela (ajuste conforme necessário)
+        root.geometry("1994x834")
         root.title("FLOOR")
         image = Image.open("LOGO.png")
-        image = image.resize((300, 300), Image.Resampling.LANCZOS)  # Redimensionar a imagem (ajuste conforme necessário)
+        image = image.resize((300, 300), Image.Resampling.LANCZOS)
         photo = ImageTk.PhotoImage(image)
         image_label = tk.Label(root, image=photo)
         image_label.place(x=550, y=-20)
-        #Adicionando Label
-        escolha_entrada=ttk.Label(root,text="TIPO DE ENTRADA: ")
-        escolha_entrada.place(x=440,y=280)
-        # Adicionando combo box
+        
+        escolha_entrada = ttk.Label(root, text="TIPO DE ENTRADA: ")
+        escolha_entrada.place(x=440, y=280)
         options = ["INICIO", "TÉRMINO"]
         combobox = ttk.Combobox(root, values=options, state='readonly')
         combobox.place(x=440, y=300, width=500, height=35)
         combobox.set("INICIO")
-        #Adicionando outro Label
-        digite_user=ttk.Label(root,text="DIGITE SEU USUÁRIO: ")
-        digite_user.place(x=440,y=350)
-        # Adicionar o campo de entrada de texto
+        
+        digite_user = ttk.Label(root, text="DIGITE SEU USUÁRIO: ")
+        digite_user.place(x=440, y=350)
+        
         entry2 = ttk.Entry(root)
         entry2.place(x=440, y=370, width=500, height=35)
-        #Label pedindo senha
-        label_pass= ttk.Label(root,text="DIGITE SEU CÓDIGO DE USUÁRIO: ")
-        label_pass.place(x=440,y=420)
-        #Entrada Para senha
-        senha=ttk.Entry(root)
-        senha.place(x=440,y=440,width=500,height=35)
-        # Adicionar o botão
+        
+        label_pass = ttk.Label(root, text="DIGITE SEU CÓDIGO DE USUÁRIO: ")
+        label_pass.place(x=440, y=420)
+        
+        senha = ttk.Entry(root)
+        senha.place(x=440, y=440, width=500, height=35)
+        
         butao = customtkinter.CTkButton(root, text="REGISTRAR", command=comando)
         butao.place(x=630, y=500)
 
-        # Adicionando outros botões
         butao_sair = customtkinter.CTkButton(root, text='SAIR', command=fechar_janela_principal, width=100)
         butao_sair.place(x=650, y=540)
 
