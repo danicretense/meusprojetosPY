@@ -97,15 +97,21 @@ def main():
                      cursor.execute(comando, (data_final, registro_id[0]))
                      conexao.commit()
                      messagebox.showinfo("FLOOR DIZ:", "TÉRMINO REGISTRADO!")
-                     comando= 'SELECT *FROM registros'
+                     comando= 'SELECT * FROM registros WHERE exportado = FALSE'
                      cursor.execute(comando)
                      en_sa=cursor.fetchall()
                      for k in en_sa:
                          entrada=k[1]
-                         saida=k[2]
+                         saida=k[2]     
+                         if not entrada or not saida:
+                              continue
                          entra_format=entrada.strftime('%d/%m/%Y %H:%M:%S')
                          sai_format=saida.strftime('%d/%m/%Y %H:%M:%S')
-                         pega_data(entra_format,sai_format,saida,entrada)
+                         pega_data(entra_format,sai_format,saida,entrada) 
+                         comando = 'UPDATE registros SET exportado = TRUE WHERE id = %s'
+                         cursor.execute(comando, (k[0],))
+                         conexao.commit()
+
                     else:
                      messagebox.showwarning("FLOOR DIZ:", "Nenhum registro de início encontrado.")
 
