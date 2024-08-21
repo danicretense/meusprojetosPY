@@ -41,16 +41,18 @@ def main():
             if not usuario or not cd_user:
                 messagebox.showwarning("FLOOR DIZ:", "Preencha todos os campos.")
                 return
-
-            conexao = mysql.connector.connect(
-                host='localhost',
+             
+            dconexao = mysql.connector.connect(
+                host='junction.proxy.rlwy.net',
                 user='root',
-                password='765FHJyjd$_@',
-                database='db_floor',
+                password='mbhoqpAzwhyvwDoAbtKsssHlcBbxfIcq', 
+                database='railway',
+                connection_timeout=10,
             )
+        
             cursor = conexao.cursor()
 
-            comando = 'INSERT INTO usuarios (nome_user, cd) VALUES (%s, %s)'
+            comando = 'INSERT INTO tabela_usuarios (nome_user, cd) VALUES (%s, %s)'
             valores = (usuario, cd_user)
             
             try:
@@ -67,13 +69,13 @@ def main():
             valor = entry2.get()
             valor1 = senha.get()
             conexao = mysql.connector.connect(
-                host='localhost',
+                host='junction.proxy.rlwy.net',
                 user='root',
-                password='765FHJyjd$_@',
-                database='db_floor',
+                password='mbhoqpAzwhyvwDoAbtKsssHlcBbxfIcq',
+                database='railway',
             )
             cursor = conexao.cursor()
-            consulta = 'SELECT * FROM usuarios WHERE nome_user = %s AND cd = %s'
+            consulta = 'SELECT * FROM tabela_usuarios WHERE nome_user = %s AND cd = %s'
             cursor.execute(consulta, (valor, valor1))
             registro = cursor.fetchone()
             if not valor or not valor1:
@@ -83,21 +85,21 @@ def main():
                 escolhido = combobox.get()  
                 if escolhido == "INICIO":
                     data_inicio = [datetime.now()]
-                    comando = 'INSERT INTO registros (entradas) VALUES (%s)'
+                    comando = 'INSERT INTO tabela_registros (entradas) VALUES (%s)'
                     valores = data_inicio
                     cursor.execute(comando, valores)
                     conexao.commit()
                     messagebox.showinfo("FLOOR DIZ:", "REGISTRADO!")
-                else:
+                else:  
                     data_final = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    cursor.execute('SELECT id FROM registros WHERE saidas IS NULL ORDER BY id DESC LIMIT 1')
+                    cursor.execute('SELECT id FROM tabela_registros WHERE saidas IS NULL ORDER BY id DESC LIMIT 1')
                     registro_id = cursor.fetchone()
                     if registro_id:
-                     comando = 'UPDATE registros SET saidas = %s WHERE id = %s'
+                     comando = 'UPDATE tabela_registros SET saidas = %s WHERE id = %s'
                      cursor.execute(comando, (data_final, registro_id[0]))
                      conexao.commit()
                      messagebox.showinfo("FLOOR DIZ:", "TÉRMINO REGISTRADO!")
-                     comando= 'SELECT * FROM registros WHERE exportado = FALSE'
+                     comando= 'SELECT * FROM tabela_registros WHERE exportado = FALSE'
                      cursor.execute(comando)
                      en_sa=cursor.fetchall()
                      for k in en_sa:
@@ -108,7 +110,7 @@ def main():
                          entra_format=entrada.strftime('%d/%m/%Y %H:%M:%S')
                          sai_format=saida.strftime('%d/%m/%Y %H:%M:%S')
                          pega_data(entra_format,sai_format,saida,entrada) 
-                         comando = 'UPDATE registros SET exportado = TRUE WHERE id = %s'
+                         comando = 'UPDATE tabela_registros SET exportado = TRUE WHERE id = %s'
                          cursor.execute(comando, (k[0],))
                          conexao.commit()
 
