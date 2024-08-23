@@ -42,11 +42,12 @@ def main():
                 messagebox.showwarning("FLOOR DIZ:", "Preencha todos os campos.")
                 return
              
-            dconexao = mysql.connector.connect(
+            conexao = mysql.connector.connect(
                 host='junction.proxy.rlwy.net',
+                port= 3306,
                 user='root',
                 password='mbhoqpAzwhyvwDoAbtKsssHlcBbxfIcq', 
-                database='railway',
+                database='railway',  
                 connection_timeout=10,
             )
         
