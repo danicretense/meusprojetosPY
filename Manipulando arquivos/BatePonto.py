@@ -1,4 +1,3 @@
-import os
 import csv
 from datetime import datetime
 import tkinter as tk
@@ -14,6 +13,7 @@ def main():
             csv.register_dialect('my_dialect', delimiter=';')
             cabecalho_ = csv.writer(file, dialect='my_dialect')
             cabecalho_.writerow(["INICIO", "TERMINO", "TEMPO ESTUDADO"])
+    #cabecalho()
 
     def calculando(saida, entrada):
         diferenca = saida - entrada
@@ -25,10 +25,8 @@ def main():
         minutes, seconds = divmod(remainder, 60)
         return f"{hours} horas, {minutes} minutos, {seconds} segundos"
 
-    
-
-    def pega_data(data, df,s,e):
-        diferenca= calculando(s,e)
+    def pega_data(data, df, s, e):
+        diferenca = calculando(s, e)
         with open('Folha de ponto.csv', 'a', newline='') as novo:
             csv.register_dialect('my_dialect', delimiter=';')
             escrevendo = csv.writer(novo, dialect='my_dialect')
@@ -43,12 +41,11 @@ def main():
                 return
              
             conexao = mysql.connector.connect(
-                host='junction.proxy.rlwy.net',
-                port= 3306,
+                host='autorack.proxy.rlwy.net',
+                port=35695,
                 user='root',
-                password='mbhoqpAzwhyvwDoAbtKsssHlcBbxfIcq', 
+                password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf', 
                 database='railway',  
-                connection_timeout=10,
             )
         
             cursor = conexao.cursor()
@@ -70,9 +67,10 @@ def main():
             valor = entry2.get()
             valor1 = senha.get()
             conexao = mysql.connector.connect(
-                host='junction.proxy.rlwy.net',
+                host='autorack.proxy.rlwy.net',
                 user='root',
-                password='mbhoqpAzwhyvwDoAbtKsssHlcBbxfIcq',
+                port=35695,
+                password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf',
                 database='railway',
             )
             cursor = conexao.cursor()
@@ -96,28 +94,27 @@ def main():
                     cursor.execute('SELECT id FROM tabela_registros WHERE saidas IS NULL ORDER BY id DESC LIMIT 1')
                     registro_id = cursor.fetchone()
                     if registro_id:
-                     comando = 'UPDATE tabela_registros SET saidas = %s WHERE id = %s'
-                     cursor.execute(comando, (data_final, registro_id[0]))
-                     conexao.commit()
-                     messagebox.showinfo("FLOOR DIZ:", "TÉRMINO REGISTRADO!")
-                     comando= 'SELECT * FROM tabela_registros WHERE exportado = FALSE'
-                     cursor.execute(comando)
-                     en_sa=cursor.fetchall()
-                     for k in en_sa:
-                         entrada=k[1]
-                         saida=k[2]     
-                         if not entrada or not saida:
-                              continue
-                         entra_format=entrada.strftime('%d/%m/%Y %H:%M:%S')
-                         sai_format=saida.strftime('%d/%m/%Y %H:%M:%S')
-                         pega_data(entra_format,sai_format,saida,entrada) 
-                         comando = 'UPDATE tabela_registros SET exportado = TRUE WHERE id = %s'
-                         cursor.execute(comando, (k[0],))
-                         conexao.commit()
+                        comando = 'UPDATE tabela_registros SET saidas = %s WHERE id = %s'
+                        cursor.execute(comando, (data_final, registro_id[0]))
+                        conexao.commit()
+                        messagebox.showinfo("FLOOR DIZ:", "TÉRMINO REGISTRADO!")
+                        comando = 'SELECT * FROM tabela_registros WHERE exportado = FALSE'
+                        cursor.execute(comando)
+                        en_sa = cursor.fetchall()
+                        for k in en_sa:
+                            entrada = k[1]
+                            saida = k[2]     
+                            if not entrada or not saida:
+                                continue
+                            entra_format = entrada.strftime('%d/%m/%Y %H:%M:%S')
+                            sai_format = saida.strftime('%d/%m/%Y %H:%M:%S')
+                            pega_data(entra_format, sai_format, saida, entrada) 
+                            comando = 'UPDATE tabela_registros SET exportado = TRUE WHERE id = %s'
+                            cursor.execute(comando, (k[0],))
+                            conexao.commit()
 
                     else:
-                     messagebox.showwarning("FLOOR DIZ:", "Nenhum registro de início encontrado.")
-
+                        messagebox.showwarning("FLOOR DIZ:", "Nenhum registro de início encontrado.")
             else:
                 messagebox.showinfo("FLOOR DIZ:", "USUÁRIO NÃO ENCONTRADO")
             cursor.close()
@@ -158,6 +155,30 @@ def main():
         def fechar_janela_principal():
             root.destroy()
 
+        def nova_janela(event):  
+            janela2 = tk.Toplevel(root)  # Usar Toplevel em vez de Tk para criar uma nova janela
+            janela2.grab_set() 
+            image = Image.open("LOGO.png")
+            image = image.resize((80, 80), Image.Resampling.LANCZOS)
+            photo = ImageTk.PhotoImage(image)
+            image_label = tk.Label(janela2, image=photo)
+            image_label.place(x=190, y=15) 
+            def procurando():
+                input_recupera.place_forget()
+                procurar.place_forget()
+                input_criar = customtkinter.CTkEntry(janela2, placeholder_text='CRIE SUA NOVA SENHA:', width=210, height=30)
+                input_criar._set_appearance_mode('light') 
+                input_criar.place(x=130, y=100)
+                guarda = customtkinter.CTkButton(janela2, text='SALVAR SENHA', command=procurando)
+                guarda.place(x=160, y=150)
+            janela2.geometry('500x500')
+            input_recupera = customtkinter.CTkEntry(janela2, placeholder_text='DIGITE SEU USUARIO:', width=210, height=30)
+            input_recupera._set_appearance_mode('light')
+            input_recupera.place(x=130, y=100)
+            procurar = customtkinter.CTkButton(janela2, text='PROCURAR USUARIO', command=procurando)
+            procurar.place(x=160, y=150)
+            janela2.mainloop()  
+            
         root = tk.Tk()
         root.geometry("1994x834")
         root.title("FLOOR")
@@ -166,7 +187,7 @@ def main():
         photo = ImageTk.PhotoImage(image)
         image_label = tk.Label(root, image=photo)
         image_label.place(x=550, y=-20)
-        
+        #ELEMENTOS TELA REGISTROS
         escolha_entrada = ttk.Label(root, text="TIPO DE ENTRADA: ")
         escolha_entrada.place(x=440, y=280)
         options = ["INICIO", "TÉRMINO"]
@@ -191,17 +212,19 @@ def main():
 
         butao_sair = customtkinter.CTkButton(root, text='SAIR', command=fechar_janela_principal, width=100)
         butao_sair.place(x=650, y=540)
-
+        recupera_senha = ttk.Label(root, text='ESQUECI A SENHA', font=('Arial', 9, "underline"))
+        recupera_senha.place(x=640, y=610)
+        recupera_senha.bind("<Button-1>", nova_janela)
         cria_user = customtkinter.CTkButton(root, text="CRIAR USUÁRIO", command=janela_registro)
         cria_user.place(x=630, y=580)
-
-        entrada1 = customtkinter.CTkEntry(root, placeholder_text='DIGITE SEU NOME: ', width=500, height=35)
-        entrada2 = customtkinter.CTkEntry(root, placeholder_text='CRIE SEU CÓDIGO DE USUARIO: ', width=500, height=35)
+        #ELEMENTOS TELA CRIAR USER
+        entrada1 = customtkinter.CTkEntry(root, placeholder_text='DIGITE SEU NOME:', width=500, height=35)
+        entrada2 = customtkinter.CTkEntry(root, placeholder_text='CRIE SEU CÓDIGO DE USUARIO:', width=500, height=35)
         bt_voltar = customtkinter.CTkButton(root, text="VOLTAR", command=voltar)
         criando = customtkinter.CTkButton(root, text='SALVAR', command=registrando)
 
         root.mainloop()
-    
+        
     create_interface()
 
 main()
