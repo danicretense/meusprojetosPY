@@ -77,7 +77,8 @@ def main():
             finally:
                 cursor.close()
                 conexao.close()
-
+ 
+             
         def comando():
             valor = entry2.get()
             valor1 = senha.get()
@@ -113,6 +114,8 @@ def main():
                         cursor.execute(comando, (data_final, registro_id[0]))
                         conexao.commit()
                         messagebox.showinfo("FLOOR DIZ:", "TÉRMINO REGISTRADO!")
+                        
+
                         comando = 'SELECT * FROM tabela_registros WHERE exportado = FALSE'
                         cursor.execute(comando)
                         en_sa = cursor.fetchall()
@@ -124,10 +127,12 @@ def main():
                             entra_format = entrada.strftime('%d/%m/%Y %H:%M:%S')
                             sai_format = saida.strftime('%d/%m/%Y %H:%M:%S')
                             pega_data(entra_format, sai_format, saida, entrada) 
+                            #pega_id=registro[0]
+                           # ver_registro= ttk.Button(root,text='VER MEU REGISTRO',command=lambda:registros(pega_id))
                             comando = 'UPDATE tabela_registros SET exportado = TRUE WHERE id = %s'
                             cursor.execute(comando, (k[0],))
                             conexao.commit()
-
+                            
                     else:
                         messagebox.showwarning("FLOOR DIZ:", "Nenhum registro de início encontrado.")
             else:
@@ -194,10 +199,9 @@ def main():
                     messagebox.showinfo("FLOOR DIZ:", "USUÁRIO ENCONTRADO")
                     input_recupera.place_forget()
                     procurar.place_forget()
-                    botao_saida.place_forget()
                     input_criar = customtkinter.CTkEntry(janela2, placeholder_text='CRIE SUA NOVA SENHA:', width=210, height=30)
                     input_criar._set_appearance_mode('light') 
-                    input_criar.place(x=130, y=100)
+                    input_criar.place(x=160, y=60)  #############################3
                     def salvo():
                         conexao = mysql.connector.connect(
                       host='autorack.proxy.rlwy.net',
@@ -224,8 +228,8 @@ def main():
                         else:
                          messagebox.showwarning("FLOOR DIZ:", "A senha deve conter apenas números.")
 
-                    criar = customtkinter.CTkButton(janela2, text='SALVAR', width=110, height=30, command=salvo)
-                    criar.place(x=160, y=150)
+                    criar = customtkinter.CTkButton(janela2, text='SALVAR',command=salvo)
+                    criar.place(x=160, y=110)
                 else:
                     messagebox.showerror("FLOOR DIZ:", "Usuário não encontrado")
                 cursor.close()
@@ -233,7 +237,7 @@ def main():
 
             input_recupera = customtkinter.CTkEntry(janela2, placeholder_text='DIGITE SEU USUÁRIO:', width=210, height=30)
             input_recupera._set_appearance_mode('light') 
-            input_recupera.place(x=130, y=60)
+            input_recupera.place(x=130, y=60)#----------------------------------
 
             procurar = customtkinter.CTkButton(janela2, text='PROCURAR', command=procurando)
             procurar.place(x=160, y=110)
