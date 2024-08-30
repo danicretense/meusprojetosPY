@@ -77,7 +77,15 @@ def main():
             finally:
                 cursor.close()
                 conexao.close()
- 
+        def janelinha():
+            win= tk.Toplevel(root)
+            win.geometry('190x90+630+300')
+            win.grab_set()
+            win.title("F")
+            label_termino=ttk.Label(win,text="TÉRMINO REGISTRADO",font=('Arial',10,'bold'))
+            label_termino.place(x=20,y=20)
+            ver_registro=ttk.Button(win,text="VER REGISTRO").place(x=45,y=40)
+            win.mainloop()
              
         def comando():
             valor = entry2.get()
@@ -116,7 +124,7 @@ def main():
                         cursor.execute(comando, (data_final, registro_id[0]))
                         conexao.commit()
                         messagebox.showinfo("FLOOR DIZ:", "TÉRMINO REGISTRADO!")
-                        
+                        janelinha()
 
                         comando = 'SELECT * FROM tabela_registros WHERE exportado = FALSE'
                         cursor.execute(comando)
@@ -303,6 +311,5 @@ def main():
         
 
     create_interface()
-    
 main() 
 
