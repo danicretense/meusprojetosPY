@@ -190,6 +190,7 @@ def main():
                 cursor.execute(consulta, [valor])
                 registro = cursor.fetchone()
                 if registro:
+                    
                     messagebox.showinfo("FLOOR DIZ:", "USUÁRIO ENCONTRADO")
                     input_recupera.place_forget()
                     procurar.place_forget()
