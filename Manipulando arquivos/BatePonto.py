@@ -93,10 +93,12 @@ def main():
             consulta = 'SELECT * FROM tabela_usuarios WHERE nome_user = %s AND cd = %s'
             cursor.execute(consulta, (valor, valor1))
             registro = cursor.fetchone()
+            
             if not valor or not valor1:
                 messagebox.showwarning("FLOOR DIZ:", "Preencha todos os campos.")
                 return
             if registro:
+                #pega_id=registro[0]
                 escolhido = combobox.get()  
                 if escolhido == "INICIO":
                     data_inicio = [datetime.now()]
