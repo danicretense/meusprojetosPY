@@ -78,6 +78,15 @@ def main():
                 cursor.close()
                 conexao.close()
         def janelinha():
+            def v_registro(id):
+              conexao = mysql.connector.connect(
+                host='autorack.proxy.rlwy.net', 
+                port=35695,
+                user='root',
+                password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf', 
+                database='railway',  
+            )
+               
             win= tk.Toplevel(root)
             win.geometry('190x90+630+300')
             win.grab_set()
