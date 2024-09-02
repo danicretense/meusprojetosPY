@@ -26,7 +26,7 @@ def main():
                 cabecalho_ = csv.writer(file, dialect='my_dialect')
                 cabecalho_.writerow(["INICIO", "TERMINO", "TEMPO ESTUDADO"])
     
-    cabecalho()
+  
     
     def calculando(saida, entrada):
         diferenca = saida - entrada
@@ -108,6 +108,7 @@ def main():
                 continue
                entra_format = entrada.strftime('%d/%m/%Y %H:%M:%S')
                sai_format = saida.strftime('%d/%m/%Y %H:%M:%S')
+               cabecalho()
                pega_data(entra_format, sai_format, saida, entrada) 
                comando = 'UPDATE tabela_registros SET exportado = TRUE WHERE id = %s'
                cursor.execute(comando, (k[2],))
@@ -116,13 +117,14 @@ def main():
               cursor.close()
               conexao.close()
               messagebox.showinfo("FLOOR DIZ:", "Registro(s) exportado(s) com sucesso!")
+             
               win.destroy()
              ver_registro = ttk.Button(win, text="BAIXAR REGISTRO", command=baixar)
              ver_registro.place(x=45, y=40)
              win.mainloop()
            
         def comando():
-            valor = entry2.get()
+            valor = entry2.get()  
             valor1 = senha.get()
             conexao = mysql.connector.connect(
                 host='autorack.proxy.rlwy.net',
@@ -234,7 +236,7 @@ def main():
                     messagebox.showinfo("FLOOR DIZ:", "USUÁRIO ENCONTRADO")
                     input_recupera.place_forget()
                     procurar.place_forget()
-                    input_criar = customtkinter.CTkEntry(janela2, placeholder_text='CRIE SUA NOVA SENHA:', width=210, height=30)
+                    input_criar = customtkinter.CTkEntry(janela2, placeholder_text='CRIE SUA NOVA SENHA:',show='*', width=210, height=30)
                     input_criar._set_appearance_mode('light') 
                     input_criar.place(x=160, y=60)  #############################3
                     def salvo():
@@ -274,7 +276,7 @@ def main():
                 
             input_recupera = customtkinter.CTkEntry(janela2, placeholder_text='DIGITE SEU USUÁRIO:', width=210, height=30)
             input_recupera._set_appearance_mode('light') 
-            input_recupera.place(x=130, y=60)#----------------------------------
+            input_recupera.place(x=128, y=60)#----------------------------------
 
             procurar = customtkinter.CTkButton(janela2, text='PROCURAR', command=procurando)
             procurar.place(x=160, y=110)
@@ -311,7 +313,7 @@ def main():
         label_pass = ttk.Label(root, text="DIGITE SEU CODIGO DE USUÁRIO:")
         label_pass.place(x=440, y=420)
 
-        senha = ttk.Entry(root)
+        senha = ttk.Entry(root,show='*')
         senha.place(x=440, y=440,width=500, height=35)
 
         butao = customtkinter.CTkButton(root, text="REGISTRAR" ,command=comando)
