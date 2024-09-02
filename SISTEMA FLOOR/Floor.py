@@ -77,6 +77,27 @@ def main():
             finally:
                 cursor.close()
                 conexao.close()
+<<<<<<< HEAD:Manipulando arquivos/BatePonto.py
+        def janelinha():
+            def v_registro(id):
+              conexao = mysql.connector.connect(
+                host='autorack.proxy.rlwy.net', 
+                port=35695,
+                user='root',
+                password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf', 
+                database='railway',  
+            )
+               
+            win= tk.Toplevel(root)
+            win.geometry('190x90+630+300')
+            win.grab_set()
+            win.title("F")
+            label_termino=ttk.Label(win,text="TÉRMINO REGISTRADO",font=('Arial',10,'bold'))
+            label_termino.place(x=20,y=20)
+            ver_registro=ttk.Button(win,text="VER REGISTRO").place(x=45,y=40)
+            win.mainloop()
+             
+=======
         def janelinha(id):
              win=tk.Toplevel(root)
              win.resizable(False,False) 
@@ -123,6 +144,7 @@ def main():
              ver_registro.place(x=45, y=40)
              win.mainloop()
            
+>>>>>>> f99ed4c6e73c63819f3e760a83b125e9b3fea6a5:SISTEMA FLOOR/Floor.py
         def comando():
             valor = entry2.get()  
             valor1 = senha.get()
