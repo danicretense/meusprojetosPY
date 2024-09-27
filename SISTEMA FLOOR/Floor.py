@@ -44,7 +44,15 @@ def main():
             csv.register_dialect('my_dialect', delimiter=';')
             escrevendo = csv.writer(novo, dialect='my_dialect')
             escrevendo.writerow([data, df, formatar_timedelta(diferenca)])
-
+    def conexao_bd():
+       conect= mysql.connector.connect(
+                host='autorack.proxy.rlwy.net', 
+                port=58204,
+                user='root',
+                password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk', 
+                database='railway',
+       )
+       return conect
     def create_interface():
         def registrando():
             usuario = entrada1.get()
@@ -55,16 +63,8 @@ def main():
             
             cd_user = int(cd_user)
 
-            conexao = mysql.connector.connect(
-                host='autorack.proxy.rlwy.net', 
-                port=58204,
-                user='root',
-                password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk', 
-                database='railway',  
-            )
-        
+            conexao =conexao_bd()
             cursor = conexao.cursor()
-
             comando = 'INSERT INTO usuario (nome_user, cd) VALUES (%s, %s)'
             valores = (usuario, cd_user)
             
@@ -89,14 +89,9 @@ def main():
                      
              label_termino=ttk.Label(win,text="TÉRMINO REGISTRADO",font=('Arial',10,'bold'))
              label_termino.place(x=20,y=20)
+             
              def baixar():
-              conexao = mysql.connector.connect(
-              host='autorack.proxy.rlwy.net',
-              user='root',
-              port=58204,
-              password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk',
-              database='railway',
-        ) 
+              conexao = conexao_bd()
               cursor = conexao.cursor()
               comando = 'SELECT entrada, saida, id FROM registro WHERE id_user = %s AND exportado = FALSE'
               cursor.execute(comando, [id])
@@ -126,20 +121,11 @@ def main():
         def comando():
             valor = entry2.get()  
             valor1 = senha.get()
-            conexao = mysql.connector.connect(
-                host='autorack.proxy.rlwy.net',
-                user='root',
-                port=58204,
-                password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk',
-                database='railway',
-            )
+            conexao = conexao_bd()
             cursor = conexao.cursor()
             consulta = 'SELECT * FROM usuario WHERE nome_user = %s AND cd = %s'
             cursor.execute(consulta, (valor, valor1))
             registro = cursor.fetchone()
-           
-            
-              
             if not valor or not valor1:
                 messagebox.showwarning("FLOOR DIZ:", "Preencha todos os campos.")
                 return
@@ -161,7 +147,7 @@ def main():
                         comando = 'UPDATE registro SET saida = %s WHERE id = %s'
                         cursor.execute(comando, (data_final, registro_id[0]))
                         conexao.commit()
-                        cursor.execute('SELECT entradas, saidas FROM registro WHERE id_user = %s AND exportado = FALSE', [id_get])
+                        cursor.execute('SELECT entrada, saida FROM registro WHERE id_user = %s AND exportado = FALSE', [id_get])
                         resultado = cursor.fetchall()
                         if resultado:
                          janelinha(id_get)
@@ -219,13 +205,7 @@ def main():
             
             
             def procurando():
-                conexao = mysql.connector.connect(
-                    host='autorack.proxy.rlwy.net',
-                    user='root',
-                    port=58204,
-                    password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWkf',
-                    database='railway',
-                )
+                conexao = conexao_bd()
                 cursor = conexao.cursor()
                 valor = input_recupera.get()
                 consulta = 'SELECT * FROM usuario WHERE nome_user = %s'
@@ -240,13 +220,7 @@ def main():
                     input_criar._set_appearance_mode('light') 
                     input_criar.place(x=160, y=60)  #############################3
                     def salvo():
-                        conexao = mysql.connector.connect(
-                      host='autorack.proxy.rlwy.net',
-                      user='root',
-                      port=58204,
-                      password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk',
-                      database='railway',
-                      )
+                        conexao = conexao_bd()
                         cursor = conexao.cursor()
                         new_pass = input_criar.get()
                         
