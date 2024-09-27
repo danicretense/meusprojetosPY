@@ -57,15 +57,15 @@ def main():
 
             conexao = mysql.connector.connect(
                 host='autorack.proxy.rlwy.net', 
-                port=35695,
+                port=58204,
                 user='root',
-                password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf', 
+                password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk', 
                 database='railway',  
             )
         
             cursor = conexao.cursor()
 
-            comando = 'INSERT INTO tabela_usuarios (nome_user, cd) VALUES (%s, %s)'
+            comando = 'INSERT INTO usuario (nome_user, cd) VALUES (%s, %s)'
             valores = (usuario, cd_user)
             
             try:
@@ -93,12 +93,12 @@ def main():
               conexao = mysql.connector.connect(
               host='autorack.proxy.rlwy.net',
               user='root',
-              port=35695,
-              password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf',
+              port=58204,
+              password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk',
               database='railway',
         ) 
               cursor = conexao.cursor()
-              comando = 'SELECT entradas, saidas, id FROM tabela_registros WHERE id_user = %s AND exportado = FALSE'
+              comando = 'SELECT entrada, saida, id FROM registro WHERE id_user = %s AND exportado = FALSE'
               cursor.execute(comando, [id])
               resultado = cursor.fetchall()
               for k in resultado:
@@ -110,7 +110,7 @@ def main():
                sai_format = saida.strftime('%d/%m/%Y %H:%M:%S')
                cabecalho()
                pega_data(entra_format, sai_format, saida, entrada) 
-               comando = 'UPDATE tabela_registros SET exportado = TRUE WHERE id = %s'
+               comando = 'UPDATE registro SET exportado = TRUE WHERE id = %s'
                cursor.execute(comando, (k[2],))
               conexao.commit()
         
@@ -129,12 +129,12 @@ def main():
             conexao = mysql.connector.connect(
                 host='autorack.proxy.rlwy.net',
                 user='root',
-                port=35695,
-                password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf',
+                port=58204,
+                password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk',
                 database='railway',
             )
             cursor = conexao.cursor()
-            consulta = 'SELECT * FROM tabela_usuarios WHERE nome_user = %s AND cd = %s'
+            consulta = 'SELECT * FROM usuario WHERE nome_user = %s AND cd = %s'
             cursor.execute(consulta, (valor, valor1))
             registro = cursor.fetchone()
            
@@ -148,20 +148,20 @@ def main():
                 id_get=registro[0]  
                 if escolhido == "INICIO":
                     data_inicio = datetime.now()
-                    comando = 'INSERT INTO tabela_registros (id_user,entradas) VALUES (%s,%s)'
+                    comando = 'INSERT INTO registro (id_user,entrada) VALUES (%s,%s)'
                     valores = (id_get,data_inicio)
                     cursor.execute(comando,valores)
                     conexao.commit()
                     messagebox.showinfo("FLOOR DIZ:", "REGISTRADO!")
                 else:  
                     data_final = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    cursor.execute('SELECT id FROM tabela_registros WHERE saidas IS NULL ORDER BY id DESC LIMIT 1')
+                    cursor.execute('SELECT id FROM registro WHERE saida IS NULL ORDER BY id DESC LIMIT 1')
                     registro_id = cursor.fetchone()
                     if registro_id:
-                        comando = 'UPDATE tabela_registros SET saidas = %s WHERE id = %s'
+                        comando = 'UPDATE registro SET saida = %s WHERE id = %s'
                         cursor.execute(comando, (data_final, registro_id[0]))
                         conexao.commit()
-                        cursor.execute('SELECT entradas, saidas FROM tabela_registros WHERE id_user = %s AND exportado = FALSE', [id_get])
+                        cursor.execute('SELECT entradas, saidas FROM registro WHERE id_user = %s AND exportado = FALSE', [id_get])
                         resultado = cursor.fetchall()
                         if resultado:
                          janelinha(id_get)
@@ -222,13 +222,13 @@ def main():
                 conexao = mysql.connector.connect(
                     host='autorack.proxy.rlwy.net',
                     user='root',
-                    port=35695,
-                    password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf',
+                    port=58204,
+                    password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWkf',
                     database='railway',
                 )
                 cursor = conexao.cursor()
                 valor = input_recupera.get()
-                consulta = 'SELECT * FROM tabela_usuarios WHERE nome_user = %s'
+                consulta = 'SELECT * FROM usuario WHERE nome_user = %s'
                 cursor.execute(consulta, [valor])
                 registro = cursor.fetchone()
                 if registro:
@@ -243,8 +243,8 @@ def main():
                         conexao = mysql.connector.connect(
                       host='autorack.proxy.rlwy.net',
                       user='root',
-                      port=35695,
-                      password='HwxRPcthWWGmOcfLZsiyBTpeKlKewPkf',
+                      port=58204,
+                      password='jzylbuYfAWXBkUwHOTiMDPYmaUXtjFWk',
                       database='railway',
                       )
                         cursor = conexao.cursor()
@@ -252,7 +252,7 @@ def main():
                         
                         if new_pass.isdigit():
                          try:
-                           comando = 'UPDATE tabela_usuarios SET cd = %s WHERE nome_user = %s'
+                           comando = 'UPDATE usuario SET cd = %s WHERE nome_user = %s'
                            cursor.execute(comando, [new_pass, valor])
                            conexao.commit()
                            messagebox.showinfo("FLOOR DIZ:", "Senha alterada com sucesso")
@@ -290,7 +290,7 @@ def main():
         root = tk.Tk()
         root.geometry("1994x834")
         root.title("FLOOR")  
-        logo_path = resource_path("resources/LOGO.png")
+        logo_path = resource_path("SISTEMA FLOOR/resources/LOGO.png")
         image = Image.open(logo_path)
         image = image.resize((300, 300), Image.Resampling.LANCZOS)
         photo = ImageTk.PhotoImage(image)
